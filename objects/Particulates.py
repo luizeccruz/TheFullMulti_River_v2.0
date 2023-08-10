@@ -58,8 +58,7 @@ class Particulates:
             #calculate corey shape factor (CSF) 
             #(Waldschlaeger 2019, doi:10.1021/acs.est.8b06794)        
             #particle number concentration calculation
-         
-            
+           
         elif self.shape == "pellet" or self.shape == "fragment":
             self.volume_m3 = self.length_a_m*self.length_b_m*self.length_c_m
             #approximate volume calculation for irregular fragments
@@ -87,6 +86,30 @@ class Particulates:
         else:
             self.concNum_part_m3 = concNum_part_L*1000
             #if number concentration is given, it is converted from part/L to part/m3
+    
+    def calc_projected_area(self):
+        
+        if self.shape == "sphere":
+            self.projected_area_m2 = math.pi*(self.radius_m)**2
+            #calculates projected area (m2) of spherical particles from MP radius
+             
+        elif self.shape == "fibre" or self.shape == "fiber" or self.shape == "cylinder":
+            self.projected_area_m2 = math.pi*(self.radius_m)**2
+            #calculates projected area (m2) of fibres or cylinders considering it as a circle
+            #(reduces changes impact, as it looks more as a sphere)
+            
+        elif self.shape == "pellet" or self.shape == "fragment":
+            self.projected_area_m2 = self.length_b_m*self.length_c_m
+            #approximate projected area (m2) calculation for irregular fragments
+            #approximated as a cuboid using intermediate and shortest length, making it closer to what the original model did 
+            #(reduces changes impact)
+            
+        else:
+            print("Error: unknown shape")
+            #print error message for shapes other than spheres 
+            #(to be removed when other volume calculations are implemented)
+    
+    
     
     #degradation estimations
     """ relates only to MP & NPs. Full degradation probably extremely slow
