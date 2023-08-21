@@ -8,7 +8,7 @@ Created on Tue Apr 30 16:10:20 2019
 
 """
 import math
-from helpers.GlobalConstants import*
+from helpers.GlobalConstants import *
 
 #define Particulates class
 class Particulates:
@@ -108,8 +108,32 @@ class Particulates:
             print("Error: unknown shape")
             #print error message for shapes other than spheres 
             #(to be removed when other volume calculations are implemented)
-    
-    
+            
+    def calc_reynolds_number(self):
+        
+        if self.shape == "sphere":
+            #still need to implement speed_m2_s
+            self.reynolds_num = (density_w_21C_kg_m3*diameter_m*speed_m2_s)/mu_w_21C_kg_ms
+        
+        else:
+            #still need to implement speed_m2_s
+            #using length_c for reduced impact in the results
+            self.reynolds_num = (density_w_21C_kg_m3*length_c_m*speed_m2_s)/mu_w_21C_kg_ms
+            
+    def calc_drag_coef(self):
+        
+        if self.shape == "sphere":
+            if self.reynolds_num < 1:
+                self.drag_coef = 24/reynolds_num
+            elif self.reynolds_num < 5:
+                self.drag_coef = 24/reynolds_num*(1+(3/16)*reynolds_num)
+            elif self.reynolds_num < 10**3:
+                self.drag_coef = 24/reynolds_num*(1+0.15*reynolds_num**0.687)
+            else:
+                self.drag_coef = 24/reynolds_num*(0.0183*reynolds_num)
+        else:
+            print("Error: shape applicable for this model yet")
+        
     
     #degradation estimations
     """ relates only to MP & NPs. Full degradation probably extremely slow
