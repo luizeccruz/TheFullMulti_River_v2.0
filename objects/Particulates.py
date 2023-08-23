@@ -109,6 +109,15 @@ class Particulates:
             #print error message for shapes other than spheres 
             #(to be removed when other volume calculations are implemented)
             
+            
+    def calc_sphericity(self):
+        if self.shape == "sphere":
+            self.sphericity = 1
+        elif self.shape == "fibre" or self.shape == "fiber" or self.shape == "cylinder":
+            self.sphericity == 0
+        elif self.shape == "pellet" or self.shape == "fragment":
+            self.sphericity ==
+            
     def calc_reynolds_number(self):
         
         if self.shape == "sphere":
