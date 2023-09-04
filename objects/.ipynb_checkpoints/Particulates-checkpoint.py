@@ -86,6 +86,16 @@ class Particulates:
         else:
             self.concNum_part_m3 = concNum_part_L*1000
             #if number concentration is given, it is converted from part/L to part/m3
+            
+            
+    #methods used for new settling model (and for further transport phenomena updates)
+    def calc_area(self):
+        
+        if self.shape == "sphere":
+            self.area = 4*math.pi()*(self.diameter_m/2)**2
+        elif self.shape == "fibre" or self.shape == "fiber" or self.shape == "cylinder":
+            self.area = 2*math.pi()*self.diameter_m/2*self.length_a_m + 2*math.pi()*(self.diameter_m/2)**2
+        elif  self.shape == "pellet" or self.shape == "fragment":
     
     def calc_projected_area(self):
         
@@ -109,30 +119,17 @@ class Particulates:
             #print error message for shapes other than spheres 
             #(to be removed when other volume calculations are implemented)
             
-    def calc_reynolds_number(self):
-        
-        if self.shape == "sphere":
-            #still need to implement speed_m2_s
-            self.reynolds_num = (density_w_21C_kg_m3*diameter_m*speed_m2_s)/mu_w_21C_kg_ms
-        
-        else:
-            #still need to implement speed_m2_s
-            #using length_c for reduced impact in the results
-            self.reynolds_num = (density_w_21C_kg_m3*length_c_m*speed_m2_s)/mu_w_21C_kg_ms
             
     def calc_drag_coef(self):
         
-        if self.shape == "sphere":
-            if self.reynolds_num < 1:
-                self.drag_coef = 24/reynolds_num
-            elif self.reynolds_num < 5:
-                self.drag_coef = 24/reynolds_num*(1+(3/16)*reynolds_num)
-            elif self.reynolds_num < 10**3:
-                self.drag_coef = 24/reynolds_num*(1+0.15*reynolds_num**0.687)
-            else:
-                self.drag_coef = 24/reynolds_num*(0.0183*reynolds_num)
-        else:
-            print("Error: shape applicable for this model yet")
+        self.sphericity = (math.pi()**(1/3)*(6*self.volume_m3)**(2/3))/self.area
+        
+        self.k1 = 0.843*math.log(self.sphericity/0.065, 10)
+        self.k2 = 5.31 - 4.88*self.sphericity
+        
+        self.cd_re2 = (4*self.diameter_m**3*density_w_21C_kg_m3(self.density_kg_m3-density_w_21C_kg_m3)*g_m_s2)(3*mu_w_21C_kg_ms**2)
+        self.re = (((self.k1*self.cd_re2)/24)**(-1.2)+(self.cd_re2/self.k2)**(-0.6))**(-1/1.2)
+        self.drag_coef = ((24/(self.k1*self.re))**(0.85)+self.k2**0.85)**(1/0.85)
         
     
     #degradation estimations

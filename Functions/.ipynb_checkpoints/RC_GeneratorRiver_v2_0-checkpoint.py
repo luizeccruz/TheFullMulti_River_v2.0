@@ -97,7 +97,6 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
         if settlingMethod == "Stokes":
             vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
-            #still need to implement drag coeficient
             MP_mass_kg = MP_density_kg_m3*MP_volume_m3
             
             vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
