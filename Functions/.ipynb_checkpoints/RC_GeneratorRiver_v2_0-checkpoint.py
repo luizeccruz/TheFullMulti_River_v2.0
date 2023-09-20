@@ -14,6 +14,7 @@ import pandas as pd
 
 #import file storing required constants
 from helpers.GlobalConstants import *
+from objects.Particulates import Particulates
 
     
     
@@ -97,10 +98,10 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
         if settlingMethod == "Stokes":
             vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
-            MP_mass_kg = MP_density_kg_m3*MP_volume_m3
+            MP_mass_kg = MP_density_kg_m3*particle.volume_m3
             
             vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
-                        (MP_projected_area_m2*MP_density_kg_m3*MP_drag_coef*density_w_21C_kg_m3))
+                        (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else:
             print("Error: cannot calculate settling other than Stokes yet")
             #print error message settling methods other than Stokes 
@@ -137,6 +138,11 @@ def rising(particle, comp_depth_m, settlingMethod, compartment):
  
         if settlingMethod == "Stokes":
             vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
+        elif settlingMethod == "Drag_coeficient": #new settling model implemented 
+            MP_mass_kg = MP_density_kg_m3*particle.volume_m3
+            
+            vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
+                        (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else: 
             print("Error: cannot calculate settling other than Stokes yet")
         #print error message settling methods other than Stokes 
