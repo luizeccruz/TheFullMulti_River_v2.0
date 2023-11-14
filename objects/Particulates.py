@@ -121,9 +121,12 @@ class Particulates:
             #(to be removed when other volume calculations are implemented)
             
             
-    def calc_drag_coef(self):
+    def calc_drag_coef(self, sphericity):
         
-        self.sphericity = (math.pi**(1/3)*(6*self.volume_m3)**(2/3))/self.area
+        if sphericity == "calculated": 
+            self.sphericity = (math.pi**(1/3)*(6*self.volume_m3)**(2/3))/self.area
+        else:
+            self.sphericity = float(sphericity)
         
         self.k1 = 0.843*math.log(self.sphericity/0.065, 10)
         self.k2 = 5.31 - 4.88*self.sphericity
