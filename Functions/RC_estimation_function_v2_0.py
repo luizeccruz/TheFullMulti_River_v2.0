@@ -75,7 +75,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -85,7 +86,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -96,7 +98,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -110,7 +113,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             # Create a dictionary with the objects
             #particles_dict = {"A": MP1, "B": MP1_SPM, "C": MP1_BF, "D": MP1_BF_SPM }
@@ -196,7 +200,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -206,7 +211,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -217,7 +223,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -231,7 +238,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])
@@ -317,7 +325,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -327,7 +336,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -338,7 +348,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -352,7 +363,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 if settling_method == "Drag_coeficient":
                     particle.calc_area()
                     particle.calc_projected_area()
-                    particle.calc_drag_coef(sphericity)
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_drag_coef()
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])

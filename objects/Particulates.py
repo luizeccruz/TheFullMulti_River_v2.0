@@ -121,19 +121,32 @@ class Particulates:
             #(to be removed when other volume calculations are implemented)
             
             
-    def calc_drag_coef(self, sphericity):
+            
+    def calc_sphericity(self, sphericity):
         
         if sphericity == "calculated": 
-            self.sphericity = (math.pi**(1/3)*(6*self.volume_m3)**(2/3))/self.area
+            sphericity = (math.pi**(1/3)*(6*self.volume_m3)**(2/3))/self.area
+            if (sphericity > 0.66):
+                self.sphericity = sphericity
+            else:
+                print("sphericity not compatible with model")
         else:
             self.sphericity = float(sphericity)
-        
+            
+            
+    def calc_drag_coef(self):
+                
         self.k1 = 0.843*math.log(self.sphericity/0.065, 10)
         self.k2 = 5.31 - 4.88*self.sphericity
         
         self.cd_re2 = (4*self.diameter_m**3*density_w_21C_kg_m3*(self.density_kg_m3-density_w_21C_kg_m3)*g_m_s2)*(3*mu_w_21C_kg_ms**2)
         self.re = (((self.k1*self.cd_re2)/24)**(-1.2)+(self.cd_re2/self.k2)**(-0.6))**(-1/1.2)
-        self.drag_coef = ((24/(self.k1*self.re))**(0.85)+self.k2**0.85)**(1/0.85)
+        if (self.re<0.5):
+            self.drag_coef = 24/(self.k1*self.re)
+        elif (2*10**3<self.re<2*10**5):
+            self.drag_coef = self.k2
+        else:
+            self.drag_coef = ((24/(self.k1*self.re))**(0.85)+self.k2**0.85)**(1/0.85)
         
     
     #degradation estimations

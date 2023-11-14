@@ -11,6 +11,7 @@ Created on Thu May 14 15:58:47 2020
 
 import math
 import pandas as pd
+import numpy as np
 
 #import file storing required constants
 from helpers.GlobalConstants import *
@@ -100,8 +101,9 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
             MP_mass_kg = MP_density_kg_m3*particle.volume_m3
             
-            vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
-                        (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
+            vSet_m_s = ((4*(MP_radius_m*2)*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))**(1/2)
+            #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
+            #           (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else:
             print("Error: cannot calculate settling other than Stokes yet")
             #print error message settling methods other than Stokes 
