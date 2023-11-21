@@ -77,6 +77,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                    
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -202,6 +203,9 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                    #if particle.shape != "sphere":
+                        #print(particle.shape)
+                    
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -213,6 +217,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                    #if particle.shape != "sphere":
+                        #print(particle.shape)
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -225,6 +231,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                    #if particle.shape != "sphere":
+                        #print(particle.shape)
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -240,6 +248,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                    #if particle.shape != "sphere":
+                       # print(particle.shape)
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])

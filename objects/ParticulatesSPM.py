@@ -27,9 +27,17 @@ class ParticulatesSPM(Particulates):
         self.radius_m = (3*(parentMP.volume_m3+parentSPM.volume_m3)/(4*math.pi))**(1/3)  #Note: this is an equivalent radius. MP-SPM most likely not truly spherical
         self.diameter_m = self.radius_m*2
         self.diameter_um = self.diameter_m*1e6
-        
+                
         self.composition = parentMP.composition + "-SPM"
         self.shape = parentMP.shape #to be updated for biofilm, could argue that shape is retained (unlike for SPM-bound)
+        
+         #atributes added for Drag coeficient model
+        self.length_a_um = parentMP.length_a_um #longest length (for nonspherical MPs)
+        self.length_a_m = self.length_a_um*10**-6 
+        self.length_b_um = parentMP.length_b_um #intermediate length (for nonspherical MPs)
+        self.length_b_m = self.length_b_um*10**-6 
+        self.length_c_um = parentMP.length_c_um #shortest length (for nonspherical MPs)
+        self.length_c_m = self.length_c_um*10**-6 
                     
 
     

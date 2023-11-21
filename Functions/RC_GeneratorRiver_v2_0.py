@@ -99,9 +99,9 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
         if settlingMethod == "Stokes":
             vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
-            MP_mass_kg = MP_density_kg_m3*particle.volume_m3
+            #MP_mass_kg = MP_density_kg_m3*particle.volume_m3
             
-            vSet_m_s = ((4*(MP_radius_m*2)*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))**(1/2)
+            vSet_m_s = ((4*particle.diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #           (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else:
@@ -112,7 +112,10 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
         #for the water and surface water compartments:
         #settling and rising rate constants for free MP
         if vSet_m_s > 0:
-            k_set = vSet_m_s/comp_depth_m
+            if settlingMethod == "Drag_coeficient":
+                k_set = vSet_m_s**(1/2)/comp_depth_m
+            else:
+                k_set = vSet_m_s/comp_depth_m
                 
         elif vSet_m_s  < 0:
             k_set  = 0
@@ -143,7 +146,7 @@ def rising(particle, comp_depth_m, settlingMethod, compartment):
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
             MP_mass_kg = MP_density_kg_m3*particle.volume_m3
             
-            vSet_m_s = ((4*(MP_radius_m*2)*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))**(1/2)
+            vSet_m_s = ((4*particle.diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #            (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else: 
@@ -158,7 +161,10 @@ def rising(particle, comp_depth_m, settlingMethod, compartment):
         k_rise = 0
             
     elif vSet_m_s  < 0:
-        k_rise = -vSet_m_s/comp_depth_m
+        if settlingMethod == "Drag_coeficient":
+            k_rise = -vSet_m_s**(1/2)/comp_depth_m
+        else:
+             k_rise = -vSet_m_s/comp_depth_m
         
     else:
         k_rise  = 0
