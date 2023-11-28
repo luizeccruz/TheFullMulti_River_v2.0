@@ -26,7 +26,7 @@ class Particulates:
         self.diameter_um = plastic_prop.diameter_um.loc[MP_index] #for spherical MPs and fibres. Should be 0 for all others.
         self.diameter_m = self.diameter_um*10**-6 #for spherical MPs and fibres. Should be 0 for all others.
         self.radius_m = self.diameter_um*10**-6/2
-        self.length_a_um = plastic_prop.length_a_um.loc[MP_index] #longest length (for nonspherical MPs)
+        self.length_a_um = plastic_prop.length_a_um.loc[MP_index] #longest length (for nonspherical MPs), 
         self.length_a_m = self.length_a_um*10**-6 
         self.length_b_um = plastic_prop.length_b_um.loc[MP_index] #intermediate length (for nonspherical MPs)
         self.length_b_m = self.length_b_um*10**-6 
@@ -70,6 +70,10 @@ class Particulates:
             #(Waldschlaeger 2019, doi:10.1021/acs.est.8b06794)        
             #particle number concentration calculation
             
+        elif self.shape == "cube":
+            self.volume_m3 = self.length_a_m**3
+            #calculates volume (in m3) of cubes from its length
+            
         else:
             print("Error: unknown shape")
             #print error message for shapes other than spheres 
@@ -97,6 +101,10 @@ class Particulates:
             self.area = 2*math.pi*self.diameter_m/2*self.length_a_m + 2*math.pi*(self.diameter_m/2)**2
         elif  self.shape == "pellet" or self.shape == "fragment":
             self.area = 2*self.length_a_m*self.length_b_m + 2*self.length_a_m*self.length_c_m + 2*self.length_b_m*self.length_c_m
+        elif self.shape == "cube":
+            self.area = 6*self.length_a_m**2
+        else:
+            print(f"Error: shape {self.shape} not implemented")
     
     def calc_projected_area(self):
         
@@ -114,6 +122,9 @@ class Particulates:
             #approximate projected area (m2) calculation for irregular fragments
             #approximated as a cuboid using intermediate and shortest length, making it closer to what the original model did 
             #(reduces changes impact)
+            
+        elif self.shape == "cube":
+            self.projected_area_m2 = self.length_a_m**2
             
         else:
             print("Error: unknown shape")

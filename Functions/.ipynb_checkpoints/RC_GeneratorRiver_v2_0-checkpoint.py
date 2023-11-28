@@ -85,6 +85,7 @@ def fragmentation(process_df,idx,particle,sizeBinIdx,aggState):
 def settling(particle, comp_depth_m, settlingMethod, compartment):
     MP_density_kg_m3=particle.density_kg_m3
     MP_radius_m=particle.radius_m
+    
     #settling calculations
     """settling can be calculated using different equations (e.g. Stokes, 
     modified versions of it or others) or be taken from experimental studies
@@ -100,8 +101,10 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
             vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
             #MP_mass_kg = MP_density_kg_m3*particle.volume_m3
+            MP_dc = particle.drag_coef
+            MP_diameter_m = particle.diameter_m
             
-            vSet_m_s = ((4*particle.diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))#**(1/2)
+            vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*MP_dc))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #           (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else:
@@ -144,9 +147,11 @@ def rising(particle, comp_depth_m, settlingMethod, compartment):
         if settlingMethod == "Stokes":
             vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
         elif settlingMethod == "Drag_coeficient": #new settling model implemented 
-            MP_mass_kg = MP_density_kg_m3*particle.volume_m3
+            #MP_mass_kg = MP_density_kg_m3*particle.volume_m3
+            MP_dc = particle.drag_coef
+            MP_diameter_m = particle.diameter_m
             
-            vSet_m_s = ((4*particle.diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*particle.drag_coef))#**(1/2)
+            vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*MP_dc))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #            (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
         else: 
