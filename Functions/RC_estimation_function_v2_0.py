@@ -79,6 +79,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
                     
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -91,6 +96,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -103,6 +113,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -118,6 +133,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             # Create a dictionary with the objects
             #particles_dict = {"A": MP1, "B": MP1_SPM, "C": MP1_BF, "D": MP1_BF_SPM }
@@ -209,6 +229,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                         #print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
                     
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -223,6 +248,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                         #print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -237,6 +267,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                         #print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -254,6 +289,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                        # print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])
@@ -343,6 +383,12 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
+                    
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -354,6 +400,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -366,6 +417,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -381,6 +437,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])

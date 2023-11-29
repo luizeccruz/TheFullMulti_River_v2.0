@@ -35,6 +35,7 @@ class ParticulatesBF(Particulates):
         self.length_b_m = self.length_b_um*10**-6 
         self.length_c_um = parentMP.length_c_um #shortest length (for nonspherical MPs)
         self.length_c_m = self.length_c_um*10**-6 
+        self.CSF = parentMP.CSF
         
         if parentMP.length_a_m == 0:
             self.length_a_m = 0

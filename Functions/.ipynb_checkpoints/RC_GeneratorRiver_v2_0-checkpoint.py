@@ -107,6 +107,8 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
             vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*MP_dc))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #           (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
+        elif settlingMethod == "dc_iteration":
+            vSet_m_s = particle.calc_vSet
         else:
             print("Error: cannot calculate settling other than Stokes yet")
             #print error message settling methods other than Stokes 

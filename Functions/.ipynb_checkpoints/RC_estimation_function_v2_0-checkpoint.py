@@ -27,7 +27,9 @@ from objects.ParticulatesSPM import ParticulatesSPM  # class to generate MP and 
 def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartments_prop, process_df, numberRS, composition, mode2, mode, date, riverComp, MPforms, sizeBin, river_flows, settling_method, sphericity):
 
     RC_df = pd.DataFrame(index=processList, columns=CombList)
-
+    list_settling = []
+    list_rising = []
+    
     if numberRS <= 10:
         print("Less than 10 RS")
     # if len(Clist) <= 10*len(riverComp)*len(MPforms)*len(sizeBin):
@@ -77,6 +79,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
                     
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -89,6 +96,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -101,6 +113,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -116,6 +133,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             # Create a dictionary with the objects
             #particles_dict = {"A": MP1, "B": MP1_SPM, "C": MP1_BF, "D": MP1_BF_SPM }
@@ -148,6 +170,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 compartment, process_df, comp_dict, idx, aggState)
             RC_df.loc["volume_m3", spc[2:6]] = particle.volume_m3
             RC_df.loc["density_kg_m3", spc[2:6]] = particle.density_kg_m3
+            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment))
+            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment))
 
     elif numberRS <= 100:
         print("10 or more RS but less than 100")
@@ -205,6 +229,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                         #print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
                     
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -219,6 +248,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                         #print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -233,6 +267,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                         #print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -250,6 +289,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_drag_coef()
                     #if particle.shape != "sphere":
                        # print(particle.shape)
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])
@@ -279,6 +323,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 compartment, process_df, comp_dict, idx, aggState)
             RC_df.loc["volume_m3", spc[2:]] = particle.volume_m3
             RC_df.loc["density_kg_m3", spc[2:]] = particle.density_kg_m3
+            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment))
+            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment))
 
     elif numberRS <= 1000:
         print("100 or more RS but less than 1000")
@@ -337,6 +383,12 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
+                    
             elif aggState == "B":
                 MP1 = Particulates(MP_prop, MP_index)
                 MP1.calc_volume()
@@ -348,6 +400,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "C":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -360,6 +417,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             elif aggState == "D":
                 MP1 = Particulates(MP_prop, MP_index)
@@ -375,6 +437,11 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
                     particle.calc_drag_coef()
+                if settling_method == "dc_iteration":
+                    particle.calc_area()
+                    particle.calc_projected_area()
+                    particle.calc_sphericity(sphericity)
+                    particle.calc_vSet()
 
             RC_df.loc["degradation", spc[2:]] = degradation(
                 process_df.t_half_d.loc[idx])
@@ -404,6 +471,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 compartment, process_df, comp_dict, idx, aggState)
             RC_df.loc["volume_m3", spc[2:]] = particle.volume_m3
             RC_df.loc["density_kg_m3", spc[2:]] = particle.density_kg_m3
+            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment))
+            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment))
     else:
         print("Number of river sections excedes 1000. Implement new code for RCs")
     # substitute NAN values by 0 in Rate cosntants dataframe
@@ -450,4 +519,4 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
         # Add a row to store values of volume of the particles and its density
         extraRow = RC_df.drop(processList)
         RC_df = pd.concat([RC_df_templim, extraRow])
-    return RC_df
+    return RC_df, list_settling, list_rising

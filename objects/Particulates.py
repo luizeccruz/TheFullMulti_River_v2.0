@@ -73,6 +73,7 @@ class Particulates:
         elif self.shape == "cube":
             self.volume_m3 = self.length_a_m**3
             #calculates volume (in m3) of cubes from its length
+            self.CSF = 1
             
         else:
             print("Error: unknown shape")
@@ -163,6 +164,37 @@ class Particulates:
             self.drag_coef = self.k2
         else:
             self.drag_coef = ((24/(self.k1*self.re))**(0.85)+self.k2**0.85)**(1/0.85)
+            
+            
+    def calc_vSet(self):
+        
+        if self.shape != "sphere":
+            self.sp_diameter_m = ((6*self.volume_m3)/math.pi)**(1/3)
+        else:
+            self.sp_diameter_m = self.diameter_m
+        
+        vset_m_s_0 =  (g_m_s2*(self.density_kg_m3-density_w_21C_kg_m3)*self.sp_diameter_m)/(18*mu_w_21C_kg_ms)
+        Re_0 = (vset_m_s_0*self.density_kg_m3*self.sp_diameter_m)/mu_w_21C_kg_ms
+        Re_corrected = self.CSF*Re_0
+        
+        Re = 0
+        
+           
+        if Re_corrected < 1:
+            self.re = Re_corrected
+            self.vset = vset_m_s_0
+        else:
+            while Re_corrected<10**4 and Re_corrected>=1:
+                if Re_corrected <= 25:
+                    cd = 24/Re_corrected+3/(Re_corrected**(1/2))+0.34
+                else:
+                    cd = 24/Re_corrected + 3/(Re_corrected**(1/2))+0.92
+                    
+                vset_m_s = ((4*g_m_s2*(self.density_kg_m3-density_w_21C_kg_m3)*self.sp_diameter_m)/(3*cd*density_w_21C_kg_m3))**(1/2)
+                Re_corrected = (vset_m_s*self.density_kg_m3*self.sp_diameter_m)/mu_w_21C_kg_ms
+            self.vset = vset_m_s
+        self.re = Re_corrected
+
         
     
     #degradation estimations
