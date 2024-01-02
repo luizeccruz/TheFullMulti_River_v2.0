@@ -12,6 +12,7 @@ k_B_J_K = 1.38*10**-23 #Boltzmann constant k_B (in J/K)
 g_m_s2 = 9.81 #gravitational acceleration on earth (in m/s2)
 
 density_w_21C_kg_m3 = 998 #density of water at 21 degree C (in kg?m2)
+density_sw_21C_kg_m3 = 1030 #density of salt water at 21 degree C (in kg?m2)
 
 mu_w_21C_mPas = 0.9764 #dynamic viscosit of water at 21 degree C (in mPa*s)
 mu_w_21C_kg_ms = mu_w_21C_mPas/1000 #dynamic viscosit of water at 21 degree C (in kg/(m*s))

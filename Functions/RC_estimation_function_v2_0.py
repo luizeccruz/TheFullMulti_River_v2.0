@@ -24,7 +24,7 @@ from helpers.GlobalConstants import *
 from objects.Particulates import Particulates  # class to generate MP and SPM objects
 from objects.ParticulatesBF import ParticulatesBF  # class to generate MP and SPM objects
 from objects.ParticulatesSPM import ParticulatesSPM  # class to generate MP and SPM objects
-def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartments_prop, process_df, numberRS, composition, mode2, mode, date, riverComp, MPforms, sizeBin, river_flows, settling_method, sphericity):
+def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartments_prop, process_df, numberRS, composition, mode2, mode, date, riverComp, MPforms, sizeBin, river_flows, settling_method, sphericity, reynolds):
 
     RC_df = pd.DataFrame(index=processList, columns=CombList)
     list_settling = []
@@ -78,7 +78,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -95,7 +95,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -112,7 +112,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -132,7 +132,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -226,7 +226,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                     #if particle.shape != "sphere":
                         #print(particle.shape)
                 if settling_method == "dc_iteration":
@@ -245,7 +245,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                     #if particle.shape != "sphere":
                         #print(particle.shape)
                 if settling_method == "dc_iteration":
@@ -264,7 +264,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                     #if particle.shape != "sphere":
                         #print(particle.shape)
                 if settling_method == "dc_iteration":
@@ -286,7 +286,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                     #if particle.shape != "sphere":
                        # print(particle.shape)
                 if settling_method == "dc_iteration":
@@ -382,7 +382,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -399,7 +399,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -416,7 +416,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
@@ -436,7 +436,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
-                    particle.calc_drag_coef()
+                    particle.calc_drag_coef(reynolds)
                 if settling_method == "dc_iteration":
                     particle.calc_area()
                     particle.calc_projected_area()
