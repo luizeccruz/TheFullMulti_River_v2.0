@@ -24,7 +24,7 @@ from helpers.GlobalConstants import *
 from objects.Particulates import Particulates  # class to generate MP and SPM objects
 from objects.ParticulatesBF import ParticulatesBF  # class to generate MP and SPM objects
 from objects.ParticulatesSPM import ParticulatesSPM  # class to generate MP and SPM objects
-def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartments_prop, process_df, numberRS, composition, mode2, mode, date, riverComp, MPforms, sizeBin, river_flows, settling_method, sphericity, reynolds):
+def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartments_prop, process_df, numberRS, composition, mode2, mode, date, riverComp, MPforms, sizeBin, river_flows, settling_method, sphericity, reynolds,water_type):
 
     RC_df = pd.DataFrame(index=processList, columns=CombList)
     list_settling = []
@@ -74,7 +74,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
             if aggState == "A":
                 particle = Particulates(MP_prop, MP_index)
                 particle.calc_volume()
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -91,7 +91,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # B: heteroaggregated (MP attached to suspended particulate matter (SPM))
                 particle = ParticulatesSPM("MP1-SPM", MP1, SPM1)
                 particle.calc_volume(MP1, SPM1)
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -108,7 +108,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # C: biofiolm-covered (MP with biofilm (BF) layer on surface)
                 particle = ParticulatesBF("MP1-BF", MP1, 1388, 5e-6)
                 particle.calc_volume()
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -128,7 +128,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # D: biofilm-heteroaggregated (MP with BF layer attached to SPM)
                 particle = ParticulatesSPM("MP1-BF-SPM", MP1_BF, SPM1)
                 particle.calc_volume(MP1_BF, SPM1)
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -151,9 +151,9 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
             RC_df.loc["breakup", spc[2:6]] = breakup(
                 process_df, idx, particle, SPM1, compartments_prop.G.loc[comp_index], compartments_prop.T_K.loc[comp_index], compartment, aggState)
             RC_df.loc["settling", spc[2:6]] = settling(
-                particle, surface.depth_m, settling_method, compartment)
+                particle, surface.depth_m, settling_method, compartment, water_type)
             RC_df.loc["rising", spc[2:6]] = rising(
-                particle, flowingWater.depth_m, settling_method, compartment)
+                particle, flowingWater.depth_m, settling_method, compartment, water_type)
             RC_df.loc["advection", spc[2:6]] = advection(
                 compartments_prop, comp_dict, compartment, riverSection, river_flows)
             # update creteria for mixing direction
@@ -170,8 +170,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 compartment, process_df, comp_dict, idx, aggState)
             RC_df.loc["volume_m3", spc[2:6]] = particle.volume_m3
             RC_df.loc["density_kg_m3", spc[2:6]] = particle.density_kg_m3
-            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment))
-            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment))
+            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment, water_type))
+            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment, water_type))
 
     elif numberRS <= 100:
         print("10 or more RS but less than 100")
@@ -222,7 +222,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
             if aggState == "A":
                 particle = Particulates(MP_prop, MP_index)
                 particle.calc_volume()
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -241,7 +241,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # B: heteroaggregated (MP attached to suspended particulate matter (SPM))
                 particle = ParticulatesSPM("MP1-SPM", MP1, SPM1)
                 particle.calc_volume(MP1, SPM1)
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -260,7 +260,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # C: biofiolm-covered (MP with biofilm (BF) layer on surface)
                 particle = ParticulatesBF("MP1-BF", MP1, 1388, 5e-6)
                 particle.calc_volume()
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -282,7 +282,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # D: biofilm-heteroaggregated (MP with BF layer attached to SPM)
                 particle = ParticulatesSPM("MP1-BF-SPM", MP1_BF, SPM1)
                 particle.calc_volume(MP1_BF, SPM1)
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -304,9 +304,9 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
             RC_df.loc["breakup", spc[2:]] = breakup(
                 process_df, idx, particle, SPM1, compartments_prop.G.loc[comp_index], compartments_prop.T_K.loc[comp_index], compartment, aggState)
             RC_df.loc["settling", spc[2:]] = settling(
-                particle, surface.depth_m, settling_method, compartment)
+                particle, surface.depth_m, settling_method, compartment, water_type)
             RC_df.loc["rising", spc[2:]] = rising(
-                particle, flowingWater.depth_m, settling_method, compartment)
+                particle, flowingWater.depth_m, settling_method, compartment, water_type)
             RC_df.loc["advection", spc[2:]] = advection(
                 compartments_prop, comp_dict, compartment, riverSection, river_flows)
             # update creteria for mixing direction
@@ -323,8 +323,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 compartment, process_df, comp_dict, idx, aggState)
             RC_df.loc["volume_m3", spc[2:]] = particle.volume_m3
             RC_df.loc["density_kg_m3", spc[2:]] = particle.density_kg_m3
-            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment))
-            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment))
+            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment, water_type))
+            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment, water_type))
 
     elif numberRS <= 1000:
         print("100 or more RS but less than 1000")
@@ -378,7 +378,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
             if aggState == "A":
                 particle = Particulates(MP_prop, MP_index)
                 particle.calc_volume()
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -395,7 +395,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # B: heteroaggregated (MP attached to suspended particulate matter (SPM))
                 particle = ParticulatesSPM("MP1-SPM", MP1, SPM1)
                 particle.calc_volume(MP1, SPM1)
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -412,7 +412,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # C: biofiolm-covered (MP with biofilm (BF) layer on surface)
                 particle = ParticulatesBF("MP1-BF", MP1, 1388, 5e-6)
                 particle.calc_volume()
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -432,7 +432,7 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 # D: biofilm-heteroaggregated (MP with BF layer attached to SPM)
                 particle = ParticulatesSPM("MP1-BF-SPM", MP1_BF, SPM1)
                 particle.calc_volume(MP1_BF, SPM1)
-                if settling_method == "Drag_coeficient":
+                if settling_method == "Drag_coefficient":
                     particle.calc_area()
                     particle.calc_projected_area()
                     particle.calc_sphericity(sphericity)
@@ -452,9 +452,9 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
             RC_df.loc["breakup", spc[2:]] = breakup(
                 process_df, idx, particle, SPM1, compartments_prop.G.loc[comp_index], compartments_prop.T_K.loc[comp_index], compartment, aggState)
             RC_df.loc["settling", spc[2:]] = settling(
-                particle, surface.depth_m, settling_method, compartment)
+                particle, surface.depth_m, settling_method, compartment, water_type)
             RC_df.loc["rising", spc[2:]] = rising(
-                particle, surface.depth_m, settling_method, compartment)
+                particle, surface.depth_m, settling_method, compartment, water_type)
             RC_df.loc["advection", spc[2:]] = advection(
                 compartments_prop, comp_dict, compartment, riverSection, river_flows)
             # update creteria for mixing direction
@@ -471,8 +471,8 @@ def RC_estimation_function_v2_0(processList, CombList, Clist, MP_prop, compartme
                 compartment, process_df, comp_dict, idx, aggState)
             RC_df.loc["volume_m3", spc[2:]] = particle.volume_m3
             RC_df.loc["density_kg_m3", spc[2:]] = particle.density_kg_m3
-            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment))
-            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment))
+            list_settling.append(settling(particle, surface.depth_m, settling_method, compartment, water_type))
+            list_rising.append(rising(particle, flowingWater.depth_m, settling_method, compartment, water_type))
     else:
         print("Number of river sections excedes 1000. Implement new code for RCs")
     # substitute NAN values by 0 in Rate cosntants dataframe

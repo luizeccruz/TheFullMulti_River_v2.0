@@ -12,10 +12,12 @@ k_B_J_K = 1.38*10**-23 #Boltzmann constant k_B (in J/K)
 g_m_s2 = 9.81 #gravitational acceleration on earth (in m/s2)
 
 density_w_21C_kg_m3 = 998 #density of water at 21 degree C (in kg?m2)
-density_sw_21C_kg_m3 = 1030 #density of salt water at 21 degree C (in kg?m2)
+density_sw_21C_kg_m3 = 1025 #density of salt water at 21 degree C (in kg?m2)
 
 mu_w_21C_mPas = 0.9764 #dynamic viscosit of water at 21 degree C (in mPa*s)
 mu_w_21C_kg_ms = mu_w_21C_mPas/1000 #dynamic viscosit of water at 21 degree C (in kg/(m*s))
+mu_sw_21C_mPas = 1.05 #dynamic viscosit of salt water at 21 degree C (in mPa*s)
+mu_sw_21C_kg_ms = mu_sw_21C_mPas/1000 #dynamic viscosit of salt water at 21 degree C (in kg/(m*s))
 
 ### Sediment parameters
 v_sed_trans=3.0 #in kgs-1 as per Praetorius et al. 2012

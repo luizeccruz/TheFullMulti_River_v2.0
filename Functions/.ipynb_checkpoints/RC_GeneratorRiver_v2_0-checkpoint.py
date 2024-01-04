@@ -82,7 +82,7 @@ def fragmentation(process_df,idx,particle,sizeBinIdx,aggState):
     
 
 
-def settling(particle, comp_depth_m, settlingMethod, compartment):
+def settling(particle, comp_depth_m, settling_method, compartment, water_type):
     MP_density_kg_m3=particle.density_kg_m3
     MP_radius_m=particle.radius_m
     
@@ -97,27 +97,36 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
         k_set = 0
         
     else:
-        if settlingMethod == "Stokes":
-            vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
-        elif settlingMethod == "Drag_coeficient": #new settling model implemented 
+        if water_type == "fresh water":
+            water_density = density_w_21C_kg_m3
+            water_mu = mu_w_21C_kg_ms
+        elif water_type == "salt water":
+            water_density = density_sw_21C_kg_m3
+            water_mu = mu_sw_21C_kg_ms
+        else:
+            print("Error: only fresh water and salt water available")
+            
+        if settling_method == "Stokes":
+            vSet_m_s = 2/9*(MP_density_kg_m3-water_density)/water_mu*g_m_s2*(MP_radius_m)**2
+        elif settling_method == "Drag_coefficient": #new settling model implemented 
             #MP_mass_kg = MP_density_kg_m3*particle.volume_m3
             MP_dc = particle.drag_coef
             MP_diameter_m = particle.diameter_m
             
-            vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*MP_dc))#**(1/2)
+            vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-water_density)*g_m_s2)/(3*water_mu*MP_dc))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #           (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
-        elif settlingMethod == "dc_iteration":
-            vSet_m_s = particle.calc_vSet
+        elif settling_method == "dc_iteration":
+            vSet_m_s = particle.vset
         else:
-            print("Error: cannot calculate settling other than Stokes yet")
+            print("Error: cannot calculate settling other than Stokes and Drag_coefficient yet")
             #print error message settling methods other than Stokes 
             #(to be removed when other settling calculations are implemented)
             
         #for the water and surface water compartments:
         #settling and rising rate constants for free MP
         if vSet_m_s > 0:
-            if settlingMethod == "Drag_coeficient":
+            if settling_method == "Drag_coefficient":
                 k_set = vSet_m_s**(1/2)/comp_depth_m
             else:
                 k_set = vSet_m_s/comp_depth_m
@@ -131,7 +140,7 @@ def settling(particle, comp_depth_m, settlingMethod, compartment):
     return k_set
         
 
-def rising(particle, comp_depth_m, settlingMethod, compartment):
+def rising(particle, comp_depth_m, settling_method, compartment, water_type):
     MP_density_kg_m3=particle.density_kg_m3
     MP_radius_m=particle.radius_m
     #rising calculations
@@ -145,19 +154,31 @@ def rising(particle, comp_depth_m, settlingMethod, compartment):
     #Rising only occus in the flowing water and stagnant water compartments (2 and 3)
     
     if (compartment == "2") or (compartment == "3"): 
+        
+        if water_type == "fresh water":
+            water_density = density_w_21C_kg_m3
+            water_mu = mu_w_21C_kg_ms
+        elif water_type == "salt water":
+            water_density = density_sw_21C_kg_m3
+            water_mu = mu_sw_21C_kg_ms
+        else:
+            print("Error: only fresh water and salt water available")
+            
  
-        if settlingMethod == "Stokes":
-            vSet_m_s = 2/9*(MP_density_kg_m3-density_w_21C_kg_m3)/mu_w_21C_kg_ms*g_m_s2*(MP_radius_m)**2
-        elif settlingMethod == "Drag_coeficient": #new settling model implemented 
+        if settling_method == "Stokes":
+            vSet_m_s = 2/9*(MP_density_kg_m3-water_density)/water_mu*g_m_s2*(MP_radius_m)**2
+        elif settling_method == "Drag_coefficient": #new settling model implemented 
             #MP_mass_kg = MP_density_kg_m3*particle.volume_m3
             MP_dc = particle.drag_coef
             MP_diameter_m = particle.diameter_m
             
-            vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-density_w_21C_kg_m3)*g_m_s2)/(3*density_w_21C_kg_m3*MP_dc))#**(1/2)
+            vSet_m_s = ((4*MP_diameter_m*(MP_density_kg_m3-water_density)*g_m_s2)/(3*water_mu*MP_dc))#**(1/2)
             #vSet_m_s = ((2*g_m_s2*(MP_density_kg_m3-density_w_21C_kg_m3)*MP_mass_kg)/
             #            (particle.projected_area_m2*MP_density_kg_m3*particle.drag_coef*density_w_21C_kg_m3))
+        elif settling_method == "dc_iteration":
+            vSet_m_s = particle.vset
         else: 
-            print("Error: cannot calculate settling other than Stokes yet")
+            print("Error: cannot calculate settling other than Stokes and Drag_coefficient yet")
         #print error message settling methods other than Stokes 
         #(to be removed when other settling calculations are implemented)
     else:
@@ -168,7 +189,7 @@ def rising(particle, comp_depth_m, settlingMethod, compartment):
         k_rise = 0
             
     elif vSet_m_s  < 0:
-        if settlingMethod == "Drag_coeficient":
+        if settling_method == "Drag_coefficient":
             k_rise = -vSet_m_s**(1/2)/comp_depth_m
         else:
              k_rise = -vSet_m_s/comp_depth_m
