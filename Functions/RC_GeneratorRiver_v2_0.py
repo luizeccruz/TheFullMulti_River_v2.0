@@ -136,7 +136,7 @@ def settling(particle, comp_depth_m, settling_method, compartment, water_type):
             
         else:
             k_set  = 0
-            
+    print(particle.shape)
     return k_set
         
 
