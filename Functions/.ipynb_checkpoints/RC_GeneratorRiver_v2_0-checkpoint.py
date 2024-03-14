@@ -136,7 +136,14 @@ def settling(particle, comp_depth_m, settling_method, compartment, water_type):
             
         else:
             k_set  = 0
+<<<<<<< HEAD
     print(particle.shape)
+=======
+    if (type(particle.re) != float):
+        print("settling")
+        print(f"re: {particle.re} | shape: {particle.shape} | diameter: {particle.diameter_m}\n")
+            
+>>>>>>> 8d174ad55ed282cfebc25ab7d22ba004ed22e8d9
     return k_set
         
 
@@ -190,13 +197,16 @@ def rising(particle, comp_depth_m, settling_method, compartment, water_type):
             
     elif vSet_m_s  < 0:
         if settling_method == "Drag_coefficient":
-            k_rise = -vSet_m_s**(1/2)/comp_depth_m
+            k_rise = (-vSet_m_s)**(1/2)/comp_depth_m
+            print(k_rise)
         else:
              k_rise = -vSet_m_s/comp_depth_m
         
     else:
         k_rise  = 0
-        
+    if (type(particle.re) != float):
+        print("rising")
+        print(f"re: {particle.re} | shape: {particle.shape} | diameter: {particle.diameter_m}\n")
     return k_rise
 
 def heteroagg(process_df,idx,particle,SPM1,G,T_K,compartment,aggState):
