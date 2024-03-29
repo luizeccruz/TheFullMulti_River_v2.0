@@ -156,7 +156,7 @@ class Particulates:
         self.k1 = 0.843*math.log(self.sphericity/0.065, 10)
         self.k2 = 5.31 - 4.88*self.sphericity
         
-        self.cd_re2 = (4*self.sp_diameter_m**3*density_w_21C_kg_m3*(self.density_kg_m3-density_w_21C_kg_m3)*g_m_s2)*(3*mu_w_21C_kg_ms**2)
+        self.cd_re2 = abs((4*self.sp_diameter_m**3*density_w_21C_kg_m3*(self.density_kg_m3-density_w_21C_kg_m3)*g_m_s2)*(3*mu_w_21C_kg_ms**2))
         
         if reynolds == "calculated":
             self.re = (((self.k1*self.cd_re2)/24)**(-1.2)+(self.cd_re2/self.k2)**(-0.6))**(-1/1.2)

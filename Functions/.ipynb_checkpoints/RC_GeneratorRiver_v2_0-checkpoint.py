@@ -191,7 +191,8 @@ def rising(particle, comp_depth_m, settling_method, compartment, water_type):
     elif vSet_m_s  < 0:
         if settling_method == "Drag_coefficient":
             k_rise = (-vSet_m_s)**(1/2)/comp_depth_m
-            k_rise = -vSet_m_s**(1/2)/comp_depth_m
+            #k_rise = -vSet_m_s**(1/2)/comp_depth_m
+            print(f"constante: {k_rise} | Re: {particle.re} | Cd: {particle.drag_coef} | CdRe2: {particle.cd_re2}")
 
         else:
              k_rise = -vSet_m_s/comp_depth_m
